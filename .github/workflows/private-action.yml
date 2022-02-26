@@ -26,5 +26,5 @@ jobs:
           assignees: |
             ManojCSE17
             manojitdev
-        run: |
+      - run: |
           echo ${{ steps.issue-action.outputs.issue }}
