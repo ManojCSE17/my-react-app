@@ -11673,7 +11673,7 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 const core = __nccwpck_require__(7117);
-const gituhub = __nccwpck_require__(4005);
+const github = __nccwpck_require__(4005);
 
 try{
     const name = core.getInput('whom-to-greet');
