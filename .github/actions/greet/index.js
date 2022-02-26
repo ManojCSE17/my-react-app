@@ -8,7 +8,7 @@ try{
 
     core.setOutput("time-of-greet", t.toTimeString());
 
-    console.log("Hello ${name}");
+    console.log('Hello ${name}');
 
     console.log(JSON.stringify(github));
 
