@@ -1,0 +1,72 @@
+name: GitHub CI
+
+on:
+  push:
+    branches:
+      - "develop"
+      - "master"
+  pull_request:
+    branches:
+      - "master"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm test -- --coverage
+        env:
+          CI: true
+
+      - name: Upload test coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-coverage
+          path: coverage
+
+      - name: build project
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npm run build
+
+      - name: Upload build folder
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: build
+
+      - name: Zip assets
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          zip -r coverage.zip ./coverage
+
+      - name: Create a Release
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: deploy to staging
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx surge --project ./build --domain ${{ secrets.SURGE_DOMAIN }}
+        env:
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+
+      - name: Create issue on failure
+        if: failure() && github.event_name == 'pull_request' && github.ref == 'refs/heads/master'
+        run: |
+          curl --request POST \
+          --url https://api.github.com/repos/${{ github.repository }}/issues \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          --header 'content-type: application/json' \
+          --data '{
+            "title": "Automated issue for commit: ${{ github.sha }}",
+            "body": "This issue was automatically created by the GitHub Action workflow **${{ github.workflow }}**. \n\n The commit hash was: _${{ github.sha }}_."
+            }' \
+          --fail
