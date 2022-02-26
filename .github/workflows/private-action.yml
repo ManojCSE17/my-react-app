@@ -16,4 +16,4 @@ jobs:
           whom-to-greet: "Manoj"
       - name: second step
         run: |
-          echo (${{ steps.greet-action-first-step.outputs.time-of-greet }})
+          echo "Time : ${{ steps.greet-action-first-step.outputs.time-of-greet }}"
