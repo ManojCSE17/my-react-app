@@ -11675,32 +11675,37 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(7117);
 const github = __nccwpck_require__(4005);
 
-try{
-    const name = core.getInput('whom-to-greet');
-    
-    const t = new Date();
+async function run(){
 
-    core.setOutput("time-of-greet", t.toTimeString());
+    try{
+        const token = core.getInput('token');
+        const title = core.getInput('title');
+        const body = core.getInput('body');
+        const assignees = core.getInput('assignees');
 
-    console.log(`Hello ${name}`);
+        const octokit = github.getOctokit(token);
+        
+        const response = await octokit.rest.issues.create({
+            owner: github.context.repo.owner,
+            repo: github.context.repo.repo,
+            title: title,
+            body: body,
+            assignees: assignees ? assignees.split('\n') : undefined
+            // Another way of specifying the above details
+            // ...github.context.repo,
+            // title,
+            // body
+        });
 
-    const secret = "This is a secret";
-    core.setSecret(secret);
-    console.log(`Secret: ${secret}`);
+        core.setOutput('issue', JSON.stringify(response.data));
 
-    core.startGroup("Basic debug types");
-    core.debug("This is a debug message!");
-    core.warning("This is a warning message!");
-    core.error("This is a error message!");
-    core.endGroup();
+    }catch(error){
+        core.setFailed(error.message);
+    }
 
-    core.exportVariable("evar","This is a exported variable!");
-
-    console.log(JSON.stringify(github));
-
-}catch(error){
-    core.setFailed(error.message);
 }
+
+run();
 })();
 
 module.exports = __webpack_exports__;

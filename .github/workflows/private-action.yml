@@ -17,3 +17,14 @@ jobs:
       - name: second step
         run: |
           echo "Time : ${{ steps.greet-action-first-step.outputs.time-of-greet }}"
+          echo "evar: ${evar}"
+      - uses: ./.github/actions/issue
+        id: issue-action
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Automated issue for commit: ${{ github.sha }}"
+          assignees: |
+            ManojCSE17
+            manojitdev
+        run: |
+          echo ${{ steps.issue-action.outputs.issue }}
