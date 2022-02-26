@@ -1,0 +1,18 @@
+name: Greet Action Impl
+
+on:
+  push:
+    branches:
+      - "develop"
+
+jobs:
+  greet-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/greet
+        id: greet-action-first-step
+        with:
+          whom-to-greet: "Manoj"
+      - name: second step
+        run: |
+          echo ${{ steps.greet-action-first-step.outputs.time-of-greet }}
