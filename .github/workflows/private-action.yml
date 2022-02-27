@@ -29,3 +29,11 @@ jobs:
       - name: output of issue action
         run: |
           echo ${{ steps.issue-action.outputs.issue }}
+      - uses: ./.github/actions/greet-docker
+        id: greet-docker-action
+        with:
+          whom-to-greet: "Manoj"
+      - name: output of greet docker action
+        run: |
+          echo ${{ steps.greet-docker-action.outputs.time-of-greet }}
+          echo ${{ env.expvar }}
