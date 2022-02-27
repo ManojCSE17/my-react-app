@@ -1,0 +1,17 @@
+name: Greet Docker Action
+author: ManojCSE17
+description: This is a Greet Docker Action to greet user(given as input)
+inputs:
+  whom-to-greet:
+    required: true
+    description: User input name to greet
+    default: "User"
+outputs:
+  time-of-greet:
+    description: Time of greet
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  # entrypoint:
+  args:
+    - "${{ inputs.whom-to-greet }}"
