@@ -35,5 +35,6 @@ jobs:
           whom-to-greet: "Manoj"
       - name: output of greet docker action
         run: |
+          chmod +x ./.github/actions/greet-docker/entrypoint.sh
           echo ${{ steps.greet-docker-action.outputs.time-of-greet }}
           echo ${{ env.expvar }}
