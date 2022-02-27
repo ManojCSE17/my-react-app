@@ -13,6 +13,6 @@ someMessage="This is a secret"
 echo "::add-mask::$someMessage"
 echo "Secret : $someMessage"
 
-echo "::set-output name=time-of-greet::$date"
+echo "::set-output name=time_of_greet::$date"
 
 echo "expvar=This is also a exported variable" >> $GITHUB_ENV
