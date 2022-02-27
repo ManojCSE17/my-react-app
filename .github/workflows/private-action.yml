@@ -36,5 +36,5 @@ jobs:
           whom-to-greet: "Manoj"
       - name: output of greet docker action
         run: |
-          echo ${{ steps.greet-docker-action.outputs.time-of-greet }}
+          echo ${{ steps.greet-docker-action.outputs.time_of_greet }}
           echo ${{ env.expvar }}
