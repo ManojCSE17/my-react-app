@@ -1,0 +1,15 @@
+name: Greet Action
+author: ManojCSE17
+description: This is a private action to greet user(given as input)
+inputs:
+  whom-to-greet:
+    description: 'Enter the user name to greet'
+    required: true
+    default: 'User'
+outputs:
+  time-of-greet:
+    description: 'time of greet'  
+runs:
+  using: 'node16'
+  main: dist/index.js
+  

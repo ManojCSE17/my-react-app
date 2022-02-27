@@ -1,0 +1,23 @@
+name: Automated issue
+author: ManojCSE17
+description: This action creates issue using actions/github
+inputs:
+  token:
+    required: true
+    description: This is used for authentication
+  title:
+    description: Title of issue
+    required: true
+  body:
+    description: Body of issue
+    required: false
+    default: "This is a automated issue created using github actions"
+  assignees:
+    description: To whom the issue will be assigned
+    required: false
+outputs:
+  issue:
+    description: Issue Object as JSON string
+runs:
+  using: 'node16'
+  main: dist/index.js
